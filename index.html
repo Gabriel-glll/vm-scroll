@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0a0a0a; --ink-2:#141414; --bone:#ece8e1; --mute:#8b8780; --red:#d42a20;
+  --ink:#0a0a0a; --ink-2:#141414; --bone:#ece8e1; --mute:#8b8780; --red:#e8392d;
   --pad:clamp(16px,4vw,56px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -46,10 +46,28 @@ nav ul a:hover{opacity:1}
 /* HERO (and its loop twin) */
 .hero{height:100vh;position:relative;overflow:hidden}
 .hero-stage{position:absolute;inset:0;display:grid;place-items:center}
-.hero-photo{position:absolute;inset:0;clip-path:inset(42% 42% 42% 42%);will-change:clip-path}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;transform:scale(1.4)}
-.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.25),rgba(10,10,10,.75))}
+/* photo seen THROUGH the logo letters (mask), then a plain copy takes over */
+.hero-photo{position:absolute;inset:0;opacity:0}
+.hero-photo.masked{-webkit-mask-image:url(img/logo.png);mask-image:url(img/logo.png);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:min(46vw,46vh);mask-size:min(46vw,46vh);-webkit-mask-position:center;mask-position:center;will-change:mask-size,mask-position}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;transform:scale(1.3)}
+.hero-photo.full::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.2),rgba(10,10,10,.75))}
 .hero-logo{position:relative;width:min(46vw,46vh);z-index:2;will-change:transform}
+/* rotating text ring around the logo (CSS-timed so hero + loop twin stay in sync) */
+.ring{position:absolute;width:min(78vw,78vh);aspect-ratio:1;z-index:1;pointer-events:none}
+.ring svg{width:100%;height:100%;animation:spin 28s linear infinite;overflow:visible}
+.ring text{font-family:"Inter Tight";font-size:5.2px;text-transform:uppercase;fill:var(--mute)}
+.ring text tspan{fill:var(--red)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.corner{position:absolute;z-index:3;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);line-height:1.6}
+.corner b{color:var(--bone);font-weight:500}
+.corner.tl{top:84px;left:var(--pad)}
+.corner.tr{top:84px;right:var(--pad);text-align:right}
+.corner.bl{bottom:22px;left:var(--pad)}
+.corner.br{bottom:22px;right:var(--pad);text-align:right}
+@media (max-width:720px){.corner.tr,.corner.br{display:none}}
+.hero.loop{height:150vh;overflow:visible}
+.hero.loop .hero-stage{position:sticky;top:0;height:100vh;inset:auto}
 .hero-title{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(24px,6vh,64px);z-index:3;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
 .hero-title h1{font-size:clamp(56px,13vw,220px)}
 .hero-title h1 span{display:block;overflow:hidden}
@@ -171,8 +189,16 @@ footer.meta a:hover{color:var(--bone)}
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-stage">
-      <div class="hero-photo"><img src="img/coracao2.jpg" alt="Camiseta VM Coração em Chamas"></div>
-      <img class="hero-logo" src="img/logo.png" alt="VM">
+      <div class="hero-photo masked"><img src="img/coracao2.jpg" alt=""></div>
+      <div class="hero-photo full"><img src="img/coracao2.jpg" alt="Camiseta VM Coração em Chamas"></div>
+      <div class="ring-wrap" style="position:absolute;display:grid;place-items:center;inset:0;pointer-events:none"><div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="circ" d="M50,50 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><text><textPath href="#circ" textLength="274" lengthAdjust="spacing">Vista uma mensagem <tspan>✶</tspan> Feito à mão <tspan>✶</tspan> Edição limitada <tspan>✶</tspan></textPath></text></svg></div></div>
+      <div class="logo-wrap" style="position:relative;z-index:2;display:grid;place-items:center"><img class="hero-logo" src="img/logo.png" alt="VM"></div>
+    </div>
+    <div class="corners">
+      <div class="corner tl">Coleção <b>Três Temas</b><br>Edição limitada</div>
+      <div class="corner tr">Estampas autorais<br><b>pintadas à mão</b></div>
+      <div class="corner br">Oversized · <b>240g</b><br>100% algodão</div>
+      <div class="scroll-hint">Role</div>
     </div>
     <div class="hero-title">
       <h1 class="display">
@@ -181,7 +207,6 @@ footer.meta a:hover{color:var(--bone)}
       </h1>
       <p class="hero-side">Estampas pintadas à mão, escondendo mensagens em cada traço. Camisetas oversized em algodão premium.</p>
     </div>
-    <div class="scroll-hint">Role</div>
   </section>
 
   <!-- MANIFESTO -->
@@ -319,10 +344,13 @@ footer.meta a:hover{color:var(--bone)}
   <!-- LOOP TWIN: looks exactly like the hero at scroll 0; reaching it jumps back to top -->
   <section class="hero loop" aria-hidden="true">
     <div class="hero-stage">
-      <div class="hero-photo"><img src="img/coracao2.jpg" alt=""></div>
-      <img class="hero-logo" src="img/logo.png" alt="">
+      <div class="ring-wrap" style="position:absolute;display:grid;place-items:center;inset:0;pointer-events:none"><div class="ring"><svg viewBox="0 0 100 100"><text><textPath href="#circ" textLength="274" lengthAdjust="spacing">Vista uma mensagem <tspan>✶</tspan> Feito à mão <tspan>✶</tspan> Edição limitada <tspan>✶</tspan></textPath></text></svg></div></div>
+      <div class="logo-wrap" style="position:relative;z-index:2;display:grid;place-items:center"><img class="hero-logo" src="img/logo.png" alt=""></div>
+      <div class="corner tl">Coleção <b>Três Temas</b><br>Edição limitada</div>
+      <div class="corner tr">Estampas autorais<br><b>pintadas à mão</b></div>
+      <div class="corner br">Oversized · <b>240g</b><br>100% algodão</div>
+      <div class="scroll-hint">Role</div>
     </div>
-    <div class="scroll-hint">Role</div>
   </section>
 </main>
 
@@ -346,15 +374,43 @@ document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click
 /* progress bar */
 gsap.to('.progress', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: true } });
 
-/* HERO: logo dives in, photo opens up, title rises */
-const hero = gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=180%', scrub: 1, pin: true } });
+// always open on the intro frame (ScrollTrigger and the browser both try to restore position)
+history.scrollRestoration = 'manual';
+ScrollTrigger.clearScrollMemory('manual');
+lenis.scrollTo(0, { immediate: true, force: true });
+
+/* INTRO on load: logo is brushed in from the bottom, ring and corners settle */
+gsap.timeline({ delay: .15 })
+  .from('#hero .logo-wrap', { clipPath: 'inset(100% 0% 0% 0%)', y: 60, rotate: -6, duration: 1.4, ease: 'expo.out' })
+  .from('#hero .ring-wrap', { scale: .6, opacity: 0, duration: 1.6, ease: 'expo.out' }, .2)
+  .from('#hero .corner, #hero .scroll-hint', { opacity: 0, y: 12, stagger: .08, duration: .8, ease: 'power3.out' }, .5);
+
+/* HERO on scroll: the photo appears INSIDE the letters, then we dive through the "V" stroke */
+const mask = document.querySelector('#hero .hero-photo.masked');
+const zoom = { p: 0 };
+const FOCUS = { x: .285, y: .5 };              // a point on the V stroke (opaque in logo.png)
+function drawMask() {
+  const W = innerWidth, H = innerHeight, L = Math.min(W, H) * .46;
+  const S = L * Math.pow(70, zoom.p);           // exponential zoom feels like constant speed
+  const e = gsap.parseEase('power2.inOut')(Math.min(zoom.p * 1.6, 1));
+  const fx = .5 + (FOCUS.x - .5) * e, fy = .5 + (FOCUS.y - .5) * e;
+  const size = S + 'px ' + S + 'px', pos = (W / 2 - fx * S) + 'px ' + (H / 2 - fy * S) + 'px';
+  mask.style.webkitMaskSize = mask.style.maskSize = size;
+  mask.style.webkitMaskPosition = mask.style.maskPosition = pos;
+}
+drawMask(); addEventListener('resize', drawMask);
+
+const hero = gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=220%', scrub: 1, pin: true } });
 hero
-  .to('#hero .hero-logo', { scale: 9, opacity: 0, ease: 'power2.in', duration: 1 }, 0)
-  .to('#hero .hero-photo', { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.inOut', duration: 1 }, 0.1)
-  .to('#hero .hero-photo img', { scale: 1, ease: 'power2.out', duration: 1.2 }, 0.1)
-  .to('#hero .scroll-hint', { opacity: 0, duration: .2 }, 0)
-  .to('#hero .hero-title h1 i', { y: 0, stagger: .12, ease: 'power3.out', duration: .5 }, .8)
-  .to('#hero .hero-side', { opacity: 1, duration: .4 }, 1.1);
+  .to('#hero .hero-photo.masked', { opacity: 1, duration: .12, ease: 'none' }, 0)
+  .to('#hero .hero-logo', { opacity: 0, duration: .14, ease: 'none' }, .02)
+  .to('#hero .ring', { scale: 2.2, opacity: 0, duration: .35, ease: 'power2.in' }, 0)
+  .to('#hero .corners', { opacity: 0, duration: .15 }, 0)
+  .to(zoom, { p: 1, duration: 1, ease: 'power2.in', onUpdate: drawMask }, .1)
+  .to('#hero .hero-photo img', { scale: 1, duration: 1.1, ease: 'none' }, .1)
+  .to('#hero .hero-photo.full', { opacity: 1, duration: .2, ease: 'none' }, .85)
+  .to('#hero .hero-title h1 i', { y: 0, stagger: .12, ease: 'power3.out', duration: .4 }, 1.05)
+  .to('#hero .hero-side', { opacity: 1, duration: .3 }, 1.25);
 
 /* MANIFESTO: word-by-word light-up */
 const m = document.getElementById('manifesto');
@@ -414,11 +470,12 @@ gsap.from('.prod', { y: 80, opacity: 0, stagger: .08, duration: 1, ease: 'power3
    When it fills the viewport, jump silently back to scroll 0. */
 if (!reduce) {
   let jumping = false;
+  const twin = document.querySelector('.hero.loop');
   lenis.on('scroll', ({ scroll }) => {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    if (!jumping && max > innerHeight * 3 && scroll >= max - 1) {
+    const top = twin.getBoundingClientRect().top + scroll;   // twin fully covers the screen from here on
+    if (!jumping && top > innerHeight * 3 && scroll >= top) {
       jumping = true;
-      lenis.scrollTo(0, { immediate: true, force: true });
+      lenis.scrollTo(Math.max(0, scroll - top), { immediate: true, force: true });
       ScrollTrigger.update();
       // skip the scrub catch-up so the hero lands on its first frame instantly
       ScrollTrigger.getAll().forEach(t => { const tw = t.getTween && t.getTween(); if (tw) tw.progress(1); });
