@@ -72,7 +72,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 .bf-stage{display:grid;grid-template-rows:1fr 1fr;min-height:clamp(480px,82vh,760px)}
 .bf-half{position:relative;display:flex;flex-direction:column;align-items:center;padding:0 var(--pad)}
 .bf-black{background:var(--ink);color:var(--bone);justify-content:flex-end}
-.bf-white{background:var(--bone);color:var(--ink);justify-content:flex-start;gap:clamp(10px,2vh,20px);padding-top:clamp(8px,2vh,18px)}
+.bf-white{background:var(--bone);color:var(--ink);justify-content:flex-start;gap:clamp(14px,2.4vh,22px);padding:clamp(8px,2vh,18px) var(--pad) clamp(28px,5vh,56px)}
 .bf-word{font-size:clamp(64px,18vw,230px);line-height:.82;text-transform:uppercase;letter-spacing:-.01em}
 .bf-black .bf-word{padding-bottom:.05em}
 .bf-white .bf-word{padding-top:.05em}
@@ -83,11 +83,11 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 .bf-seal-up{font-size:calc(var(--s)*.09);font-weight:700;letter-spacing:.2em;text-transform:uppercase}
 .bf-seal-pct{font-size:calc(var(--s)*.42);line-height:.85}
 .bf-seal-off{font-size:calc(var(--s)*.2);line-height:.9}
-@media (max-width:640px){
+@media (max-width:860px){
   .bf-stage{grid-template-rows:auto auto;min-height:0}
   .bf-black{padding:48px var(--pad) 20px}
   .bf-word{font-size:24vw}
-  .bf-white{padding-bottom:40px;gap:14px}
+  .bf-white{padding-bottom:48px;gap:16px}
   .bf-seal{position:static;transform:rotate(-8deg);margin-top:4px}
   .bf-white .btn-buy{width:100%}
 }
