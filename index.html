@@ -4,487 +4,373 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VM — Vista uma mensagem</title>
-<meta name="description" content="VM Oversized. Estampas autorais pintadas à mão, algodão premium. Cada peça carrega uma mensagem.">
+<meta name="description" content="Camisetas oversized com estampas autorais pintadas à mão. Algodão premium 240g, edição limitada.">
 <meta name="theme-color" content="#0a0a0a">
 <link rel="icon" href="img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0a0a0a; --ink-2:#141414; --bone:#ece8e1; --mute:#8b8780; --red:#e8392d;
-  --pad:clamp(16px,4vw,56px);
+  --ink:#0a0a0a; --ink-2:#141414; --ink-3:#1d1d1d; --line:#262626;
+  --bone:#ece8e1; --mute:#8b8780; --red:#e8392d; --red-2:#ff4b3e;
+  --pad:clamp(16px,4vw,48px); --max:1320px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html.lenis,html.lenis body{height:auto}
-.lenis.lenis-smooth{scroll-behavior:auto!important}
+html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--bone);font-family:"Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-.display{font-family:Anton,Impact,sans-serif;text-transform:uppercase;line-height:.86;letter-spacing:-.01em;font-weight:400}
-.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+.display{font-family:Anton,Impact,sans-serif;text-transform:uppercase;line-height:.9;letter-spacing:-.005em;font-weight:400}
+.red{color:var(--red)}
+.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:14px}
+.muted{color:var(--mute);font-size:13px}
 
-/* grain */
-body::after{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:100;opacity:.07;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation:grain 1s steps(4) infinite}
-@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}}
+/* botões */
+.btn-buy{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:uppercase;padding:15px 30px;border-radius:4px;transition:background .15s}
+.btn-buy:hover{background:var(--red-2)}
+.btn-buy.lg{font-size:17px;padding:19px 40px}
+.btn-buy.sm{font-size:13px;padding:11px 14px;width:100%;margin-top:12px}
 
-/* nav */
-nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px var(--pad);mix-blend-mode:difference}
-nav .logo img{width:40px}
-nav ul{display:flex;gap:28px;list-style:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
-nav ul a{opacity:.8;transition:opacity .2s}
-nav ul a:hover{opacity:1}
-.cta{font-size:13px;letter-spacing:.12em;text-transform:uppercase;border:1px solid currentColor;padding:10px 18px;border-radius:99px;transition:background .2s,color .2s}
-.cta:hover{background:var(--bone);color:var(--ink)}
-@media (max-width:720px){nav ul{display:none}}
+/* aviso + header */
+.announce{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--red);color:#fff;text-align:center;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:9px var(--pad)}
+.site-header{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px var(--pad);background:rgba(10,10,10,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{grid-column:2}
+.brand img{width:44px;height:44px}
+.menu-btn{grid-column:1;justify-self:start;width:40px;height:40px;display:grid;place-items:center}
+.burger,.burger::before,.burger::after{display:block;width:22px;height:2px;background:currentColor;position:relative}
+.burger::before,.burger::after{content:"";position:absolute;left:0}
+.burger::before{top:-7px}.burger::after{top:7px}
+.main-nav{display:none}
+.head-actions{grid-column:3;justify-self:end;display:flex;align-items:center;gap:4px}
+.icon-btn{width:40px;height:40px;display:grid;place-items:center;opacity:.85}
 
-/* progress */
-.progress{position:fixed;left:0;top:0;height:2px;background:var(--red);width:100%;transform-origin:0 50%;transform:scaleX(0);z-index:60}
+/* seções + grade */
+.section{max-width:var(--max);margin:0 auto;padding:clamp(48px,8vw,96px) var(--pad)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(40px,6vw,80px)}
+.offer{font-size:clamp(15px,1.4vw,19px);color:#cfcac2;max-width:360px;line-height:1.45}
+.offer b{color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,22px)}
+@media (max-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.card{display:flex;flex-direction:column}
+.card-ph{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:4px;background:var(--ink-3)}
+.card-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:opacity .4s,transform .6s cubic-bezier(.2,.7,.2,1);position:absolute;inset:0}
+.card-ph .alt{opacity:0}
+@media (hover:hover){.card:hover .card-ph img{transform:scale(1.04)}.card:hover .card-ph .alt{opacity:1}.card:hover .btn-buy{background:var(--red-2)}}
+.tag{position:absolute;top:10px;left:10px;z-index:2;background:var(--red);color:#fff;font-size:12px;font-weight:700;padding:4px 8px;border-radius:2px}
+.card h3{font-size:14px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;margin-top:12px}
+.price{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:6px}
+.price s{color:var(--mute);font-size:13px}
+.price strong{font-size:18px}
+.inst{font-size:12px;color:var(--mute);margin-top:2px}
 
-/* HERO (and its loop twin) */
-.hero{height:100vh;position:relative;overflow:hidden}
-.hero-stage{position:absolute;inset:0;display:grid;place-items:center}
-/* photo seen THROUGH the logo letters (mask), then a plain copy takes over */
-.hero-photo{position:absolute;inset:0;opacity:0}
-.hero-photo.masked{-webkit-mask-image:url(img/logo.png);mask-image:url(img/logo.png);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:min(46vw,46vh);mask-size:min(46vw,46vh);-webkit-mask-position:center;mask-position:center;will-change:mask-size,mask-position}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;transform:scale(1.3)}
-.hero-photo.full::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.2),rgba(10,10,10,.75))}
-.hero-logo{position:relative;width:min(46vw,46vh);z-index:2;will-change:transform}
-/* rotating text ring around the logo (CSS-timed so hero + loop twin stay in sync) */
-.ring{position:absolute;width:min(78vw,78vh);aspect-ratio:1;z-index:1;pointer-events:none}
-.ring svg{width:100%;height:100%;animation:spin 28s linear infinite;overflow:visible}
-.ring text{font-family:"Inter Tight";font-size:5.2px;text-transform:uppercase;fill:var(--mute)}
-.ring text tspan{fill:var(--red)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.corner{position:absolute;z-index:3;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);line-height:1.6}
-.corner b{color:var(--bone);font-weight:500}
-.corner.tl{top:84px;left:var(--pad)}
-.corner.tr{top:84px;right:var(--pad);text-align:right}
-.corner.bl{bottom:22px;left:var(--pad)}
-.corner.br{bottom:22px;right:var(--pad);text-align:right}
-@media (max-width:720px){.corner.tr,.corner.br{display:none}}
-.hero.loop{height:150vh;overflow:visible}
-.hero.loop .hero-stage{position:sticky;top:0;height:100vh;inset:auto}
-.hero-title{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(24px,6vh,64px);z-index:3;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
-.hero-title h1{font-size:clamp(56px,13vw,220px)}
-.hero-title h1 span{display:block;overflow:hidden}
-.hero-title h1 span i{display:block;font-style:normal;transform:translateY(105%)}
-.hero-title h1 .red{color:var(--red)}
-.hero-side{max-width:260px;font-size:14px;line-height:1.5;color:var(--bone);opacity:0}
-.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:3;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute)}
-@media (max-width:720px){.hero-title{flex-direction:column;align-items:flex-start}.hero-side{max-width:none}}
+/* banner black friday */
+.bf-banner{position:relative;min-height:clamp(420px,62vh,680px);display:flex;align-items:flex-end;overflow:hidden}
+.bf-bg{position:absolute;inset:0}
+.bf-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.bf-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.3) 0%,rgba(10,10,10,.68) 55%,rgba(10,10,10,.97) 100%),linear-gradient(110deg,rgba(232,57,45,.24),transparent 55%)}
+.bf-content{position:relative;z-index:2;width:100%;max-width:var(--max);margin:0 auto;padding:clamp(28px,6vw,64px) var(--pad) clamp(36px,7vw,72px)}
+.bf-title{font-size:clamp(54px,11vw,148px);margin:10px 0 18px}
+.bf-title span{display:block}
+.bf-sub{max-width:420px;color:var(--bone);font-size:clamp(14px,1.6vw,17px);line-height:1.5;margin-bottom:26px}
+.bf-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.bf-tag{background:var(--red);color:#fff;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:9px 16px;border-radius:99px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(232,57,45,.35)}
 
-/* MANIFESTO */
-.manifesto{padding:22vh var(--pad);max-width:1400px;margin:0 auto}
-.manifesto p{font-size:clamp(30px,5.2vw,84px);line-height:1.05;font-weight:500;letter-spacing:-.025em}
-.manifesto .w{opacity:.12;display:inline-block;margin-right:.22em}
-.manifesto .w.hl{color:var(--red)}
-.manifesto .eyebrow{margin-bottom:40px}
+/* faixa de benefícios */
+.perks{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.perks li{background:var(--ink);display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 10px;text-align:center;font-size:13px;color:#cfcac2}
+.perks svg{flex:none;color:var(--red)}
+@media (max-width:760px){.perks{grid-template-columns:repeat(2,1fr)}.perks li{font-size:12px}}
 
-/* COLLECTIONS: horizontal */
-.cols{position:relative;height:100vh;overflow:hidden}
-.cols-track{display:flex;height:100%;width:max-content;will-change:transform}
-.panel{width:100vw;height:100%;flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,64px);align-items:center;padding:12vh var(--pad) 8vh;position:relative}
-.panel .num{position:absolute;top:10vh;left:var(--pad);font-family:Anton;font-size:clamp(120px,24vw,380px);line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(236,232,225,.18);pointer-events:none}
-.panel .txt{position:relative;z-index:2}
-.panel h2{font-size:clamp(48px,8vw,140px);margin:16px 0 22px}
-.panel h2 em{font-style:normal;color:var(--red)}
-.panel .meaning{font-size:clamp(16px,1.4vw,20px);line-height:1.5;max-width:420px;color:#cfcac2}
-.panel .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
-.panel .tags span{font-size:12px;letter-spacing:.1em;text-transform:uppercase;border:1px solid #333;border-radius:99px;padding:7px 12px;color:var(--mute)}
-.pics{position:relative;height:100%;min-height:0}
-.pics figure{position:absolute;overflow:hidden;border-radius:4px;background:#1b1b1b}
-.pics figure img{width:100%;height:100%;object-fit:cover;transform:scale(1.25)}
-.pics .a{inset:0 18% 12% 0}
-.pics .b{width:46%;aspect-ratio:1;right:0;bottom:0;box-shadow:0 30px 60px rgba(0,0,0,.5)}
-.panel.intro{grid-template-columns:1fr;align-content:center}
-.panel.intro h2{font-size:clamp(64px,13vw,230px)}
-@media (max-width:820px){
-  .panel{grid-template-columns:1fr;grid-template-rows:auto 1fr;padding-top:13vh;gap:22px}
-  .panel .num{top:8vh}
-  .pics .a{inset:0 22% 18% 0}
-}
+/* manifesto */
+.manifesto-static{max-width:1100px}
+.manifesto-txt{font-size:clamp(24px,4vw,50px);line-height:1.25;font-weight:500;letter-spacing:-.01em;color:#cfcac2}
 
-/* MARQUEE */
-.marquee{padding:6vh 0;overflow:hidden;border-block:1px solid #222;background:var(--red);color:var(--ink)}
-.marquee .row{display:flex;white-space:nowrap;will-change:transform}
-.marquee .row span{font-family:Anton;font-size:clamp(56px,10vw,160px);text-transform:uppercase;padding-right:.4em;line-height:1}
-.marquee .row span b{font-weight:400;-webkit-text-stroke:2px var(--ink);color:transparent}
+/* coleções */
+.coll-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
+.coll-card{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--ink-2);display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+@media (hover:hover){.coll-card:hover{border-color:#3a3a3a;transform:translateY(-4px)}}
+.coll-ph{position:relative;aspect-ratio:4/5;background:var(--ink-3)}
+.coll-ph img{width:100%;height:100%;object-fit:cover}
+.coll-info{padding:22px 22px 26px;display:flex;flex-direction:column;gap:4px;flex:1}
+.coll-info .num{font-family:Anton,sans-serif;color:var(--red);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.coll-info h3{font-size:clamp(26px,2.6vw,32px);margin:6px 0 10px}
+.coll-info p{font-size:14px;color:#bdb8b0;line-height:1.55;flex:1}
+.coll-info .tags{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 16px}
+.coll-info .tags span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid #333;border-radius:99px;padding:5px 10px;color:var(--mute)}
+@media (max-width:900px){.coll-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.coll-grid{grid-template-columns:1fr}}
 
-/* PROCESSO: stacking cards */
-.process{padding:20vh var(--pad) 10vh}
-.process header{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:8vh;flex-wrap:wrap}
-.process header h2{font-size:clamp(52px,9vw,150px)}
-.process header p{max-width:340px;color:#bdb8b0;line-height:1.5}
-.stack{position:relative}
-.card{position:sticky;top:12vh;height:72vh;margin-bottom:6vh;border-radius:6px;overflow:hidden;display:grid;grid-template-columns:1.1fr 1fr;background:var(--ink-2);border:1px solid #232323;transform-origin:50% 0}
-.card .c-txt{padding:clamp(24px,4vw,56px);display:flex;flex-direction:column;justify-content:space-between;gap:20px}
-.card .c-txt .step{font-family:Anton;font-size:clamp(60px,8vw,120px);color:var(--red);line-height:.8}
-.card h3{font-size:clamp(30px,min(4.4vw,7.5vh),72px);margin-bottom:14px}
-.card .c-txt .step{font-size:clamp(48px,min(8vw,13vh),120px)}
-.card p{color:#bdb8b0;line-height:1.55;max-width:440px}
-.card .c-img{overflow:hidden}
-.card .c-img img{width:100%;height:100%;object-fit:cover}
-.card:nth-child(2){background:#e9e5de;color:var(--ink);border-color:#e9e5de}
-.card:nth-child(2) p{color:#4a4743}
-.card:nth-child(3){background:#1d0c0b;border-color:#3a1512}
-@media (max-width:820px){.card{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:78vh;top:10vh}}
+/* marquee */
+.marquee{overflow:hidden;border-block:1px solid #222;background:var(--red);padding:clamp(12px,2.6vw,20px) 0}
+.mq-row{display:flex;white-space:nowrap;width:max-content;animation:mq 16s linear infinite}
+.mq-row span{font-family:Anton,sans-serif;font-size:clamp(26px,4.6vw,52px);text-transform:uppercase;padding-right:.4em;color:var(--ink);line-height:1}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* DETALHES */
-.detail{position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4vw;padding:12vh var(--pad);overflow:hidden}
-.detail .tee{position:relative;filter:drop-shadow(0 40px 60px rgba(0,0,0,.7))}
-.detail .tee img{width:100%;mix-blend-mode:normal;border-radius:50%;background:radial-gradient(circle,#f4f2ee 0,#d9d6d0 70%)}
-.specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#262626;border:1px solid #262626}
-.spec{background:var(--ink);padding:28px 22px}
-.spec .v{font-family:Anton;font-size:clamp(48px,6vw,92px);line-height:.9}
-.spec .v small{font-size:.4em;color:var(--red);margin-left:4px}
-.spec .l{margin-top:10px;font-size:13px;color:var(--mute);letter-spacing:.06em}
-.detail h2{font-size:clamp(48px,7vw,120px);margin-bottom:32px}
-.detail .warn{margin-top:22px;font-size:12px;color:var(--mute);line-height:1.5}
-@media (max-width:820px){.detail{grid-template-columns:1fr}.detail .tee{max-width:420px;margin:0 auto}}
+/* processo */
+.proc-intro{max-width:340px;color:#bdb8b0;line-height:1.5}
+.proc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px)}
+.proc-card{border-radius:8px;overflow:hidden;background:var(--ink-2);border:1px solid var(--line);display:flex;flex-direction:column}
+.proc-ph{position:relative;aspect-ratio:4/3}
+.proc-ph img{width:100%;height:100%;object-fit:cover}
+.proc-txt{padding:22px;display:flex;flex-direction:column;gap:8px}
+.proc-txt .step{font-family:Anton,sans-serif;color:var(--red);font-size:30px;line-height:1}
+.proc-txt h3{font-size:19px}
+.proc-txt p{font-size:14px;color:#bdb8b0;line-height:1.55}
+@media (max-width:900px){.proc-grid{grid-template-columns:1fr}}
 
-/* LOJA */
-.shop{padding:18vh var(--pad) 16vh}
-.shop header{display:flex;justify-content:space-between;align-items:end;margin-bottom:6vh;gap:20px;flex-wrap:wrap}
-.shop h2{font-size:clamp(56px,10vw,170px)}
-.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,1.4vw,20px)}
-.prod{display:block}
-.prod .ph{aspect-ratio:3/4;overflow:hidden;border-radius:4px;background:#1b1b1b;position:relative}
-.prod .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s,transform .8s cubic-bezier(.2,.7,.2,1)}
-.prod .ph img+img{opacity:0}
-.prod:hover .ph img{transform:scale(1.05)}
-.prod:hover .ph img+img{opacity:1}
-.prod .ph .tag{position:absolute;top:10px;left:10px;z-index:2;background:var(--red);color:#fff;font-size:11px;letter-spacing:.1em;padding:5px 8px;text-transform:uppercase}
-.prod h4{font-weight:600;font-size:14px;letter-spacing:.04em;margin-top:14px}
-.prod .price{margin-top:6px;font-size:14px;display:flex;gap:10px}
-.prod .price s{color:var(--mute)}
-@media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.prod:nth-child(5){display:none}}
+/* detalhes */
+.detail-static{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);align-items:center}
+.detail-static .tee{filter:drop-shadow(0 30px 50px rgba(0,0,0,.6))}
+.detail-static .tee img{width:100%;height:auto;border-radius:50%;background:radial-gradient(circle,#f4f2ee 0,#d9d6d0 70%)}
+.specs-static{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin:22px 0 28px}
+.specs-static .spec{background:var(--ink);padding:20px;display:flex;flex-direction:column;gap:6px}
+.specs-static strong{font-family:Anton,sans-serif;font-size:clamp(22px,2.6vw,32px);font-weight:400;text-transform:uppercase}
+.specs-static span{font-size:12px;color:var(--mute)}
+@media (max-width:820px){.detail-static{grid-template-columns:1fr}.detail-static .tee{max-width:320px;margin:0 auto}.detail-static .btn-buy{width:100%}}
 
-/* loop twin: identical to hero at scroll 0 */
-.loop-note{position:absolute;top:22vh;left:0;right:0;text-align:center;z-index:3}
+/* cupom */
+.coupon-band{background:var(--bone);color:var(--ink);text-align:center;padding:clamp(40px,7vw,72px) var(--pad);display:flex;flex-direction:column;align-items:center;gap:14px}
+.coupon-band .display{font-size:clamp(32px,5vw,60px)}
+.coupon-band .code{border:2px dashed var(--ink);padding:3px 10px;letter-spacing:.18em;font-weight:700}
 
-footer.meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:28px var(--pad);border-top:1px solid #1f1f1f;font-size:13px;color:var(--mute)}
-footer.meta a:hover{color:var(--bone)}
+/* rodapé */
+.site-footer{border-top:1px solid var(--line);padding:56px var(--pad) 28px}
+.foot-grid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+.foot-grid>div{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.foot-grid h4{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.foot-grid a:hover{color:var(--red)}
+.foot-logo{font-size:56px}
+.legal{max-width:var(--max);margin:40px auto 0;font-size:12px;color:var(--mute);border-top:1px solid var(--line);padding-top:20px}
+@media (max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>div:first-child{grid-column:1/-1}}
 
-@media (prefers-reduced-motion:reduce){body::after{animation:none}}
+/* aviso de preview */
+.preview-flag{position:fixed;left:14px;bottom:14px;z-index:999;background:var(--ink-2);border:1px solid var(--line);color:var(--mute);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border-radius:99px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="progress"></div>
 
-<nav>
-  <a class="logo" href="#top" aria-label="VM início"><img src="img/logo.png" alt="VM"></a>
-  <ul>
-    <li><a href="#colecoes">Coleções</a></li>
-    <li><a href="#processo">Processo</a></li>
-    <li><a href="#loja">Loja</a></li>
+<div class="announce" role="status" id="announce">Black Friday VM — o maior desconto do ano, por tempo limitado</div>
+<header class="site-header">
+  <button class="icon-btn menu-btn" aria-label="Abrir menu"><span class="burger"></span></button>
+  <a href="#" class="brand" aria-label="VM — página inicial"><img src="img/logo.png" alt="VM"></a>
+  <div class="head-actions">
+    <a href="#" class="icon-btn" aria-label="Minha conta">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+    </a>
+    <a href="#" class="icon-btn" aria-label="Carrinho">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <section class="bf-banner">
+    <div class="bf-bg"><img src="img/hd/foto25.jpg" alt=""></div>
+    <div class="bf-content">
+      <p class="eyebrow">Oferta por tempo limitado</p>
+      <h1 class="display bf-title">Black<span class="red">Friday VM</span></h1>
+      <p class="bf-sub">Estampas pintadas à mão, edição limitada. Leve 2 ou + camisetas e ganhe frete grátis.</p>
+      <div class="bf-actions">
+        <a href="#loja" class="btn-buy lg">Aproveitar agora</a>
+        <span class="bf-tag">até 35% off</span>
+      </div>
+    </div>
+  </section>
+
+  <ul class="perks" aria-label="Benefícios VM">
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Frete grátis em 2 ou + peças</li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Pintado à mão — edição limitada</li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Algodão premium 240g</li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Até 12x no cartão</li>
   </ul>
-  <a class="cta" href="https://www.vmoficial.com.br" target="_blank" rel="noopener">Comprar</a>
-</nav>
 
-<main id="top">
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-stage">
-      <div class="hero-photo masked"><img src="img/coracao2.jpg" alt=""></div>
-      <div class="hero-photo full"><img src="img/coracao2.jpg" alt="Camiseta VM Coração em Chamas"></div>
-      <div class="ring-wrap" style="position:absolute;display:grid;place-items:center;inset:0;pointer-events:none"><div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="circ" d="M50,50 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><text><textPath href="#circ" textLength="274" lengthAdjust="spacing">Vista uma mensagem <tspan>✶</tspan> Feito à mão <tspan>✶</tspan> Edição limitada <tspan>✶</tspan></textPath></text></svg></div></div>
-      <div class="logo-wrap" style="position:relative;z-index:2;display:grid;place-items:center"><img class="hero-logo" src="img/logo.png" alt="VM"></div>
+  <section class="section" id="loja">
+    <div class="sec-head">
+      <h2 class="display">A coleção</h2>
+      <p class="offer">Leve 2 ou + e ganhe <b>frete grátis</b>. 5% OFF na 1ª compra com o cupom <b>VMOVER</b>.</p>
     </div>
-    <div class="corners">
-      <div class="corner tl">Coleção <b>Três Temas</b><br>Edição limitada</div>
-      <div class="corner tr">Estampas autorais<br><b>pintadas à mão</b></div>
-      <div class="corner br">Oversized · <b>240g</b><br>100% algodão</div>
-      <div class="scroll-hint">Role</div>
-    </div>
-    <div class="hero-title">
-      <h1 class="display">
-        <span><i>Vista uma</i></span>
-        <span><i class="red">mensagem.</i></span>
-      </h1>
-      <p class="hero-side">Estampas pintadas à mão, escondendo mensagens em cada traço. Camisetas oversized em algodão premium.</p>
+    <div class="grid">
+      <a href="#" class="card">
+        <div class="card-ph"><span class="tag">-35%</span><img src="img/hd/foto15.jpg" alt="Camiseta Premium Flor"><img class="alt" src="img/hd/foto52.jpg" alt=""></div>
+        <h3>Camiseta Premium Flor</h3>
+        <div class="price"><s>R$ 229,99</s><strong>R$ 149,99</strong></div>
+        <p class="inst">ou em até 12x no cartão</p>
+        <span class="btn-buy sm">Comprar</span>
+      </a>
+      <a href="#" class="card">
+        <div class="card-ph"><span class="tag">-35%</span><img src="img/hd/foto43.jpg" alt="Camiseta Premium Onda"><img class="alt" src="img/hd/foto54.jpg" alt=""></div>
+        <h3>Camiseta Premium Onda</h3>
+        <div class="price"><s>R$ 229,99</s><strong>R$ 149,99</strong></div>
+        <p class="inst">ou em até 12x no cartão</p>
+        <span class="btn-buy sm">Comprar</span>
+      </a>
+      <a href="#" class="card">
+        <div class="card-ph"><span class="tag">-35%</span><img src="img/hd/foto25.jpg" alt="Camiseta Premium Coração"><img class="alt" src="img/hd/foto48.jpg" alt=""></div>
+        <h3>Camiseta Premium Coração</h3>
+        <div class="price"><s>R$ 229,99</s><strong>R$ 149,99</strong></div>
+        <p class="inst">ou em até 12x no cartão</p>
+        <span class="btn-buy sm">Comprar</span>
+      </a>
+      <a href="#" class="card">
+        <div class="card-ph"><span class="tag">-37%</span><img src="img/hd/foto24.jpg" alt="Camiseta Basic Coração"><img class="alt" src="img/hd/foto47.jpg" alt=""></div>
+        <h3>Camiseta Basic Coração</h3>
+        <div class="price"><s>R$ 174,99</s><strong>R$ 109,99</strong></div>
+        <p class="inst">ou em até 12x no cartão</p>
+        <span class="btn-buy sm">Comprar</span>
+      </a>
+      <a href="#" class="card">
+        <div class="card-ph"><span class="tag">-37%</span><img src="img/hd/foto26.jpg" alt="Camiseta Basic Onda"><img class="alt" src="img/hd/foto50.jpg" alt=""></div>
+        <h3>Camiseta Basic Onda</h3>
+        <div class="price"><s>R$ 174,99</s><strong>R$ 109,99</strong></div>
+        <p class="inst">ou em até 12x no cartão</p>
+        <span class="btn-buy sm">Comprar</span>
+      </a>
     </div>
   </section>
 
-  <!-- MANIFESTO -->
-  <section class="manifesto">
+  <section class="section manifesto-static">
     <p class="eyebrow">Manifesto</p>
-    <p id="manifesto">Vestir é muito mais do que escolher uma peça. É carregar uma ideia, um sentimento e uma história que ressoa em quem observa e em quem veste.</p>
+    <p class="manifesto-txt">Vestir é muito mais do que escolher uma peça. É carregar uma <span class="red">ideia</span>, um <span class="red">sentimento</span> e uma <span class="red">história</span> que ressoa em quem observa e em quem veste.</p>
   </section>
 
-  <!-- COLEÇÕES -->
-  <section class="cols" id="colecoes">
-    <div class="cols-track">
-      <div class="panel intro">
-        <div class="txt">
-          <p class="eyebrow">Três temas · Edição limitada</p>
-          <h2 class="display">Cada arte,<br><em>uma mensagem</em> →</h2>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="num">01</div>
-        <div class="txt">
-          <p class="eyebrow">Tema 01</p>
-          <h2 class="display">Rosa<br>na <em>mão</em></h2>
-          <p class="meaning">Entrega. Oferecer o que há de mais verdadeiro, mesmo quando custa. Uma rosa estendida por uma mão marcada.</p>
+  <section class="section" id="colecoes">
+    <div class="sec-head">
+      <p class="eyebrow">Três temas · Edição limitada</p>
+      <h2 class="display">Cada arte,<br><span class="red">uma mensagem</span></h2>
+    </div>
+    <div class="coll-grid">
+      <article class="coll-card">
+        <div class="coll-ph"><img src="img/hd/foto19.jpg" alt=""></div>
+        <div class="coll-info">
+          <span class="num">Tema 01</span>
+          <h3 class="display">Rosa na <span class="red">mão</span></h3>
+          <p>Entrega. Oferecer o que há de mais verdadeiro, mesmo quando custa. Uma rosa estendida por uma mão marcada.</p>
           <div class="tags"><span>Premium</span><span>Preta</span><span>240g</span></div>
+          <a href="#" class="btn-buy sm">Comprar</a>
         </div>
-        <div class="pics">
-          <figure class="a"><img src="img/flor1.jpg" alt="Camiseta Rosa na Mão — costas"></figure>
-          <figure class="b"><img src="img/flor2.jpg" alt="Camiseta Rosa na Mão — detalhe"></figure>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="num">02</div>
-        <div class="txt">
-          <p class="eyebrow">Tema 02</p>
-          <h2 class="display">On<em>das</em></h2>
-          <p class="meaning">Movimento. Persistência e coragem pra seguir em frente, mesmo quando o mar não acalma.</p>
+      </article>
+      <article class="coll-card">
+        <div class="coll-ph"><img src="img/hd/foto43.jpg" alt=""></div>
+        <div class="coll-info">
+          <span class="num">Tema 02</span>
+          <h3 class="display">On<span class="red">das</span></h3>
+          <p>Movimento. Persistência e coragem pra seguir em frente, mesmo quando o mar não acalma.</p>
           <div class="tags"><span>Premium</span><span>Basic</span><span>Branca</span></div>
+          <a href="#" class="btn-buy sm">Comprar</a>
         </div>
-        <div class="pics">
-          <figure class="a"><img src="img/onda2.jpg" alt="Camiseta Ondas — costas"></figure>
-          <figure class="b"><img src="img/basiconda.jpg" alt="Camiseta Basic Onda"></figure>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="num">03</div>
-        <div class="txt">
-          <p class="eyebrow">Tema 03</p>
-          <h2 class="display">Coração<br>em <em>chamas</em></h2>
-          <p class="meaning">Paixão e propósito. Viver com o coração ativo — intenso, inteiro, aceso.</p>
+      </article>
+      <article class="coll-card">
+        <div class="coll-ph"><img src="img/hd/foto25.jpg" alt=""></div>
+        <div class="coll-info">
+          <span class="num">Tema 03</span>
+          <h3 class="display">Coração em <span class="red">chamas</span></h3>
+          <p>Paixão e propósito. Viver com o coração ativo — intenso, inteiro, aceso.</p>
           <div class="tags"><span>Premium</span><span>Basic</span><span>Preta</span></div>
+          <a href="#" class="btn-buy sm">Comprar</a>
         </div>
-        <div class="pics">
-          <figure class="a"><img src="img/coracao2.jpg" alt="Camiseta Coração em Chamas — costas"></figure>
-          <figure class="b"><img src="img/coracao1.jpg" alt="Camiseta Coração em Chamas — frente"></figure>
-        </div>
-      </div>
+      </article>
     </div>
   </section>
 
-  <!-- MARQUEE -->
-  <section class="marquee" aria-hidden="true">
-    <div class="row" id="mq1"><span>Autêntico ✶ <b>Feito à mão</b> ✶ Oversized ✶ <b>Edição limitada</b> ✶&nbsp;</span><span>Autêntico ✶ <b>Feito à mão</b> ✶ Oversized ✶ <b>Edição limitada</b> ✶&nbsp;</span></div>
-  </section>
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-row">
+      <span>Autêntico ✶ Feito à mão ✶ Oversized ✶ Edição limitada ✶&nbsp;</span>
+      <span>Autêntico ✶ Feito à mão ✶ Oversized ✶ Edição limitada ✶&nbsp;</span>
+    </div>
+  </div>
 
-  <!-- PROCESSO -->
-  <section class="process" id="processo">
-    <header>
+  <section class="section" id="sobre">
+    <div class="sec-head">
       <h2 class="display">Da tela<br>pro algodão</h2>
-      <p>Toda estampa nasce como pintura física. Nada sai de banco de imagens — cada traço é de alguém.</p>
-    </header>
-    <div class="stack">
-      <article class="card">
-        <div class="c-txt">
-          <span class="step">01</span>
-          <div><h3 class="display">Pintado à mão</h3><p>As artes são criadas manualmente em telas, com tinta e pincel. O erro, o borrão e a textura ficam — é isso que torna a peça única.</p></div>
-        </div>
-        <div class="c-img"><img src="img/flor2.jpg" alt=""></div>
+      <p class="proc-intro">Toda estampa nasce como pintura física. Nada sai de banco de imagens — cada traço é de alguém.</p>
+    </div>
+    <div class="proc-grid">
+      <article class="proc-card">
+        <div class="proc-ph"><img src="img/hd/foto61.jpg" alt=""></div>
+        <div class="proc-txt"><span class="step">01</span><h3 class="display">Pintado à mão</h3><p>As artes são criadas manualmente em telas, com tinta e pincel. O erro, o borrão e a textura ficam — é isso que torna a peça única.</p></div>
       </article>
-      <article class="card">
-        <div class="c-txt">
-          <span class="step">02</span>
-          <div><h3 class="display">Mensagem oculta</h3><p>Cada desenho esconde uma mensagem. Quem olha rápido vê uma estampa. Quem para pra olhar, encontra uma história.</p></div>
-        </div>
-        <div class="c-img"><img src="img/onda1.jpg" alt=""></div>
+      <article class="proc-card">
+        <div class="proc-ph"><img src="img/hd/foto31.jpg" alt=""></div>
+        <div class="proc-txt"><span class="step">02</span><h3 class="display">Mensagem oculta</h3><p>Cada desenho esconde uma mensagem. Quem olha rápido vê uma estampa. Quem para pra olhar, encontra uma história.</p></div>
       </article>
-      <article class="card">
-        <div class="c-txt">
-          <span class="step">03</span>
-          <div><h3 class="display">Estampa premium</h3><p>A tela é digitalizada e estampada em algodão penteado, com bordado VM e selo de autenticidade em cada peça.</p></div>
-        </div>
-        <div class="c-img"><img src="img/coracao1.jpg" alt=""></div>
+      <article class="proc-card">
+        <div class="proc-ph"><img src="img/hd/foto26.jpg" alt=""></div>
+        <div class="proc-txt"><span class="step">03</span><h3 class="display">Estampa premium</h3><p>A tela é digitalizada e estampada em algodão penteado, com bordado VM e selo de autenticidade em cada peça.</p></div>
       </article>
     </div>
   </section>
 
-  <!-- DETALHES -->
-  <section class="detail">
+  <section class="section detail-static">
     <div class="tee"><img src="img/quem.png" alt="Camiseta VM oversized preta"></div>
     <div>
       <p class="eyebrow">Linha Premium</p>
       <h2 class="display">Peso que<br>se sente.</h2>
-      <div class="specs">
-        <div class="spec"><div class="v"><span data-count="240">0</span><small>g</small></div><div class="l">Malha encorpada, caimento estruturado</div></div>
-        <div class="spec"><div class="v"><span data-count="40">0</span><small>.1</small></div><div class="l">Fio penteado, fino e resistente</div></div>
-        <div class="spec"><div class="v"><span data-count="100">0</span><small>%</small></div><div class="l">Algodão — respira e absorve</div></div>
-        <div class="spec"><div class="v">∞</div><div class="l">Hipoalergênico, toque macio</div></div>
+      <div class="specs-static">
+        <div class="spec"><strong>240g</strong><span>Malha encorpada, caimento estruturado</span></div>
+        <div class="spec"><strong>Fio 40.1</strong><span>Fio penteado, fino e resistente</span></div>
+        <div class="spec"><strong>100%</strong><span>Algodão — respira e absorve</span></div>
+        <div class="spec"><strong>Hipoalergênico</strong><span>Toque macio, pele tranquila</span></div>
       </div>
-      <p class="warn">Produto 100% algodão — não usar secagem em máquinas lava e seca.</p>
+      <a href="#loja" class="btn-buy lg">Comprar camisetas</a>
+      <p class="muted" style="margin-top:14px">Produto 100% algodão — não usar secagem em máquinas lava e seca.</p>
     </div>
   </section>
 
-  <!-- LOJA -->
-  <section class="shop" id="loja">
-    <header>
-      <h2 class="display">A coleção</h2>
-      <a class="cta" href="https://www.vmoficial.com.br" target="_blank" rel="noopener">Ver todos os produtos →</a>
-    </header>
-    <div class="grid">
-      <a class="prod" href="https://www.vmoficial.com.br" target="_blank" rel="noopener"><div class="ph"><span class="tag">-35%</span><img src="img/flor1.jpg" alt="" loading="lazy"><img src="img/flor2.jpg" alt="" loading="lazy"></div><h4>CAMISETA PREMIUM FLOR</h4><div class="price"><s>R$ 229,99</s><span>R$ 149,99</span></div></a>
-      <a class="prod" href="https://www.vmoficial.com.br" target="_blank" rel="noopener"><div class="ph"><span class="tag">-35%</span><img src="img/onda1.jpg" alt="" loading="lazy"><img src="img/onda2.jpg" alt="" loading="lazy"></div><h4>CAMISETA PREMIUM ONDA</h4><div class="price"><s>R$ 229,99</s><span>R$ 149,99</span></div></a>
-      <a class="prod" href="https://www.vmoficial.com.br" target="_blank" rel="noopener"><div class="ph"><span class="tag">-35%</span><img src="img/coracao1.jpg" alt="" loading="lazy"><img src="img/coracao2.jpg" alt="" loading="lazy"></div><h4>CAMISETA PREMIUM CORAÇÃO</h4><div class="price"><s>R$ 229,99</s><span>R$ 149,99</span></div></a>
-      <a class="prod" href="https://www.vmoficial.com.br" target="_blank" rel="noopener"><div class="ph"><span class="tag">-37%</span><img src="img/coracao2.jpg" alt="" loading="lazy"><img src="img/basiccor.jpg" alt="" loading="lazy"></div><h4>CAMISETA BASIC CORAÇÃO</h4><div class="price"><s>R$ 174,99</s><span>R$ 109,99</span></div></a>
-      <a class="prod" href="https://www.vmoficial.com.br" target="_blank" rel="noopener"><div class="ph"><span class="tag">-37%</span><img src="img/basiconda.jpg" alt="" loading="lazy"><img src="img/onda1.jpg" alt="" loading="lazy"></div><h4>CAMISETA BASIC ONDA</h4><div class="price"><s>R$ 174,99</s><span>R$ 109,99</span></div></a>
-    </div>
+  <section class="coupon-band">
+    <p class="display">Ganhe <span class="red">5% OFF</span> na primeira compra</p>
+    <p>Use o cupom <span class="code">VMOVER</span> no checkout</p>
+    <a href="#loja" class="btn-buy">Comprar</a>
   </section>
 
-  <footer class="meta">
-    <span>Compre 2 peças e ganhe frete grátis · Cupom primeira compra: <b style="color:var(--bone)">VMOVER</b></span>
-    <span><a href="https://www.instagram.com/vm.over" target="_blank" rel="noopener">@vm.over</a> · <a href="https://www.vmoficial.com.br" target="_blank" rel="noopener">vmoficial.com.br</a></span>
-  </footer>
-
-  <!-- LOOP TWIN: looks exactly like the hero at scroll 0; reaching it jumps back to top -->
-  <section class="hero loop" aria-hidden="true">
-    <div class="hero-stage">
-      <div class="ring-wrap" style="position:absolute;display:grid;place-items:center;inset:0;pointer-events:none"><div class="ring"><svg viewBox="0 0 100 100"><text><textPath href="#circ" textLength="274" lengthAdjust="spacing">Vista uma mensagem <tspan>✶</tspan> Feito à mão <tspan>✶</tspan> Edição limitada <tspan>✶</tspan></textPath></text></svg></div></div>
-      <div class="logo-wrap" style="position:relative;z-index:2;display:grid;place-items:center"><img class="hero-logo" src="img/logo.png" alt=""></div>
-      <div class="corner tl">Coleção <b>Três Temas</b><br>Edição limitada</div>
-      <div class="corner tr">Estampas autorais<br><b>pintadas à mão</b></div>
-      <div class="corner br">Oversized · <b>240g</b><br>100% algodão</div>
-      <div class="scroll-hint">Role</div>
-    </div>
-  </section>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div>
+      <p class="display foot-logo">VM</p>
+      <p class="muted">Vista uma mensagem. Estampas autorais pintadas à mão.</p>
+    </div>
+    <div>
+      <h4>Loja</h4>
+      <a href="#loja">Todas as camisetas</a>
+      <a href="#loja">Linha Premium</a>
+      <a href="#loja">Linha Basic</a>
+    </div>
+    <div>
+      <h4>Ajuda</h4>
+      <a href="#">Trocas e devoluções</a>
+      <a href="#">Política de privacidade</a>
+      <a href="https://wa.me/5519999729347" target="_blank" rel="noopener">WhatsApp (19) 99972-9347</a>
+      <a href="mailto:vmoveroficial@gmail.com">vmoveroficial@gmail.com</a>
+    </div>
+    <div>
+      <h4>Siga</h4>
+      <a href="https://www.instagram.com/vm.over" target="_blank" rel="noopener">Instagram @vm.over</a>
+      <p class="muted">Pix · Cartão de crédito · Boleto</p>
+    </div>
+  </div>
+  <p class="legal">© 2026 VM.OVER LTDA · CNPJ 62.944.991/0001-18 · Sumaré - SP</p>
+</footer>
+
+<div class="preview-flag">Preview de layout — não é a loja ao vivo</div>
+
 <script>
-gsap.registerPlugin(ScrollTrigger);
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* smooth scroll */
-const lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add(t => lenis.raf(t * 1000));
-gsap.ticker.lagSmoothing(0);
-
-document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-  e.preventDefault(); lenis.scrollTo(a.getAttribute('href') === '#top' ? 0 : a.getAttribute('href'), { duration: 1.6 });
-}));
-
-/* progress bar */
-gsap.to('.progress', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: true } });
-
-// always open on the intro frame (ScrollTrigger and the browser both try to restore position)
-history.scrollRestoration = 'manual';
-ScrollTrigger.clearScrollMemory('manual');
-lenis.scrollTo(0, { immediate: true, force: true });
-
-/* INTRO on load: logo is brushed in from the bottom, ring and corners settle */
-gsap.timeline({ delay: .15 })
-  .from('#hero .logo-wrap', { clipPath: 'inset(100% 0% 0% 0%)', y: 60, rotate: -6, duration: 1.4, ease: 'expo.out' })
-  .from('#hero .ring-wrap', { scale: .6, opacity: 0, duration: 1.6, ease: 'expo.out' }, .2)
-  .from('#hero .corner, #hero .scroll-hint', { opacity: 0, y: 12, stagger: .08, duration: .8, ease: 'power3.out' }, .5);
-
-/* HERO on scroll: the photo appears INSIDE the letters, then we dive through the "V" stroke */
-const mask = document.querySelector('#hero .hero-photo.masked');
-const zoom = { p: 0 };
-const FOCUS = { x: .285, y: .5 };              // a point on the V stroke (opaque in logo.png)
-function drawMask() {
-  const W = innerWidth, H = innerHeight, L = Math.min(W, H) * .46;
-  const S = L * Math.pow(70, zoom.p);           // exponential zoom feels like constant speed
-  const e = gsap.parseEase('power2.inOut')(Math.min(zoom.p * 1.6, 1));
-  const fx = .5 + (FOCUS.x - .5) * e, fy = .5 + (FOCUS.y - .5) * e;
-  const size = S + 'px ' + S + 'px', pos = (W / 2 - fx * S) + 'px ' + (H / 2 - fy * S) + 'px';
-  mask.style.webkitMaskSize = mask.style.maskSize = size;
-  mask.style.webkitMaskPosition = mask.style.maskPosition = pos;
-}
-drawMask(); addEventListener('resize', drawMask);
-
-const hero = gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=220%', scrub: 1, pin: true } });
-hero
-  .to('#hero .hero-photo.masked', { opacity: 1, duration: .12, ease: 'none' }, 0)
-  .to('#hero .hero-logo', { opacity: 0, duration: .14, ease: 'none' }, .02)
-  .to('#hero .ring', { scale: 2.2, opacity: 0, duration: .35, ease: 'power2.in' }, 0)
-  .to('#hero .corners', { opacity: 0, duration: .15 }, 0)
-  .to(zoom, { p: 1, duration: 1, ease: 'power2.in', onUpdate: drawMask }, .1)
-  .to('#hero .hero-photo img', { scale: 1, duration: 1.1, ease: 'none' }, .1)
-  .to('#hero .hero-photo.full', { opacity: 1, duration: .2, ease: 'none' }, .85)
-  .to('#hero .hero-title h1 i', { y: 0, stagger: .12, ease: 'power3.out', duration: .4 }, 1.05)
-  .to('#hero .hero-side', { opacity: 1, duration: .3 }, 1.25);
-
-/* MANIFESTO: word-by-word light-up */
-const m = document.getElementById('manifesto');
-const hl = ['ideia,', 'sentimento', 'história'];
-m.innerHTML = m.textContent.trim().split(/\s+/).map(w => `<span class="w${hl.includes(w) ? ' hl' : ''}">${w}</span>`).join(' ');
-gsap.to('#manifesto .w', { opacity: 1, stagger: .1, ease: 'none',
-  scrollTrigger: { trigger: '#manifesto', start: 'top 80%', end: 'bottom 45%', scrub: true } });
-
-/* COLEÇÕES: horizontal scroll pinned */
-const track = document.querySelector('.cols-track');
-const dist = () => track.scrollWidth - innerWidth;
-const horiz = gsap.to(track, { x: () => -dist(), ease: 'none',
-  scrollTrigger: { trigger: '.cols', start: 'top top', end: () => '+=' + dist(), scrub: 1, pin: true, invalidateOnRefresh: true } });
-document.querySelectorAll('.panel').forEach(p => {
-  const st = { trigger: p, containerAnimation: horiz, start: 'left right', end: 'right left', scrub: true };
-  p.querySelectorAll('.pics img').forEach((img, i) => gsap.fromTo(img, { xPercent: i ? 12 : -8 }, { xPercent: i ? -12 : 8, ease: 'none', scrollTrigger: st }));
-  const num = p.querySelector('.num'); if (num) gsap.fromTo(num, { xPercent: 30 }, { xPercent: -30, ease: 'none', scrollTrigger: st });
-  const b = p.querySelector('.pics .b'); if (b) gsap.fromTo(b, { yPercent: 20 }, { yPercent: -10, ease: 'none', scrollTrigger: st });
-});
-
-/* MARQUEE: always moving, speeds up and flips with scroll velocity */
-const row = document.getElementById('mq1');
-const loop = gsap.to(row, { xPercent: -50, repeat: -1, duration: 18, ease: 'none' });
-let dir = 1;
-ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => {
-  const v = self.getVelocity();
-  if (v) dir = v > 0 ? 1 : -1;
-  gsap.to(loop, { timeScale: dir * (1 + Math.min(Math.abs(v) / 250, 6)), duration: .25, overwrite: true });
-  gsap.to(row, { skewX: gsap.utils.clamp(-10, 10, -v / 200), duration: .4, overwrite: 'auto' });
-}});
-setInterval(() => gsap.to(loop, { timeScale: dir, duration: 1.2 }), 300);
-
-/* PROCESSO: stacking cards shrink as next one covers them */
-const cards = gsap.utils.toArray('.card');
-cards.forEach((c, i) => {
-  if (i === cards.length - 1) return;
-  gsap.to(c, { scale: .9, filter: 'brightness(.35)', ease: 'none',
-    scrollTrigger: { trigger: cards[i + 1], start: 'top bottom', end: 'top 12%', scrub: true } });
-});
-cards.forEach(c => gsap.fromTo(c.querySelector('.c-img img'), { scale: 1.25 }, { scale: 1, ease: 'none',
-  scrollTrigger: { trigger: c, start: 'top bottom', end: 'top 12%', scrub: true } }));
-
-/* DETALHES: tee spins in, counters tick */
-gsap.fromTo('.detail .tee', { rotate: -14, xPercent: -30, opacity: 0 }, { rotate: 6, xPercent: 0, opacity: 1, ease: 'none',
-  scrollTrigger: { trigger: '.detail', start: 'top bottom', end: 'center center', scrub: 1 } });
-document.querySelectorAll('[data-count]').forEach(el => {
-  const o = { v: 0 };
-  gsap.to(o, { v: +el.dataset.count, duration: 1.6, ease: 'power2.out', onUpdate: () => el.textContent = Math.round(o.v),
-    scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
-});
-
-/* LOJA: products rise in staggered */
-gsap.from('.prod', { y: 80, opacity: 0, stagger: .08, duration: 1, ease: 'power3.out',
-  scrollTrigger: { trigger: '.grid', start: 'top 85%' } });
-
-/* INFINITE LOOP: the last screen is a twin of the hero's first frame.
-   When it fills the viewport, jump silently back to scroll 0. */
-if (!reduce) {
-  let jumping = false;
-  const twin = document.querySelector('.hero.loop');
-  lenis.on('scroll', ({ scroll }) => {
-    const top = twin.getBoundingClientRect().top + scroll;   // twin fully covers the screen from here on
-    if (!jumping && top > innerHeight * 3 && scroll >= top) {
-      jumping = true;
-      lenis.scrollTo(Math.max(0, scroll - top), { immediate: true, force: true });
-      ScrollTrigger.update();
-      // skip the scrub catch-up so the hero lands on its first frame instantly
-      ScrollTrigger.getAll().forEach(t => { const tw = t.getTween && t.getTween(); if (tw) tw.progress(1); });
-      requestAnimationFrame(() => jumping = false);
-    }
-  });
-}
-
-addEventListener('load', () => ScrollTrigger.refresh());
+// aviso rotativo (só visual, mesmas mensagens do site)
+var msgs = [
+  "Black Friday VM — o maior desconto do ano, por tempo limitado",
+  "Leve 2 ou + camisetas e ganhe frete grátis",
+  "5% OFF na primeira compra com o cupom VMOVER",
+  "Estampas pintadas à mão · Edição limitada"
+];
+var i = 0, el = document.getElementById("announce");
+setInterval(function () { i = (i + 1) % msgs.length; el.textContent = msgs[i]; }, 4000);
 </script>
 </body>
 </html>
